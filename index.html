@@ -26,17 +26,20 @@
 <body>
     <header class="container-xxl p-3 mb-2 bg-dark text-white text-center">
         <div class="card-group">
-            <div class="col-lg-8">
-                <h1 class="p-3">Weather Dashboard</h1>
+            <div class="col-lg-9">
+                <div class="box-header p-3">
+                    <h1>Weather Dashboard</h1>
+                    <h3><p id="currentDay" class="lead"></p></h3>
+                </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="card bg-dark border-primary text-white" style="padding:0px">
                     <div class="card-header bg-primary text-center">
                         Search for a City
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="City Name">
+                            <input type="text" class="form-control" placeholder="City Name" data-search="search-location">
                             <button class="btn bg-primary" type="button" id="button-addon2">Search</button>
                         </div>
                     </div>
@@ -45,15 +48,35 @@
         </div>
         
     </header>
-    <main class="flex-row justify-space-between">
-        <div class="col-12">
-            
-            
+    <main class="container-xxl p-3 mb-2">
+        <div class="card-group">
+            <div class="col">
+                <div class="card-group">
+                    <div class="card bg-dark border-info text-white">
+                        <div class="card-header bg-primary border-primary text-center w-100" id="searched-city">
+                            CITY
+                        </div>
+                        <div class="card-body" id="weather-details">
+                            <!-- <h5 class="card-title">Details</h5>
+                            <p class="card-text" id="temp">Temperature</p>
+                            <p class="card-text" id="wind">Temperature</p>
+                            <p class="card-text" id="humidity">Temperature</p>
+                            <p class="card-text" id="uv">Temperature</p> -->
+                        </div>
+                        <div class="card-header bg-primary border-primary text-center">
+                            5 - Day Forecast
+                        </div>
+                        <div class="card-body" id="5-day-forecast">
+                            <!-- <h5 class="card-title">Details</h5>
+                            <p class="card-text">Temperature</p>
+                            <p class="card-text">Temperature</p>
+                            <p class="card-text">Temperature</p>
+                            <p class="card-text">Temperature</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-            
-        
-
-        
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
