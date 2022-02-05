@@ -1,4 +1,5 @@
 var citySearchEl = document.querySelector("#button-addon2"); 
+var inputValue = document.querySelector("#search-location");
 
 var day = moment().format('MMMM Do YYYY, h:mm:ss a');
 $("#currentDay").append(document.createTextNode(day));
@@ -8,8 +9,9 @@ var getWeatherData = function(input) {
     console.log(apiUrl);
 };
 
-var buttonClickHandler = function(event) {
-    console.log("button-clicked");
+var buttonClickHandler = function() {
+    var input = inputValue.value.trim();
+    getWeatherData(input);
 };
 
 citySearchEl.addEventListener("click", buttonClickHandler);
