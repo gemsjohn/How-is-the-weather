@@ -4,13 +4,14 @@ var inputValueEl = document.querySelector("#search-location");
 var displayResultsEl = document.querySelector("#results");
 var weatherDetails = document.querySelector("#weather-details");
 var forecastDetails = document.querySelector("#fiveDayForecast");
+var historyEl = document.querySelector("#history");
 
 // Establish the current date and time
 var day = moment().format('MMMM Do YYYY, h:mm:ss a');
 $("#currentDay").append(document.createTextNode(day));
 
-// When the user searches for a city, the input value 
-// serves as a parameter for the getWeatherData function
+// User selects Search Button and passes input value as a 
+// parameter through getWeatherData()
 var buttonClickHandler = function() {
     var input = inputValueEl.value.trim();
     getWeatherData(input);
@@ -73,6 +74,11 @@ var displaySearchResult = function (city) {
             var i = element.getAttribute('data-select');
 
             displayResultsEl.remove();
+
+            var historicalButton = document.createElement("button");
+            historicalButton.classList = "btn btn-info btn-lg text-light m-3 btn-hover";
+            historicalButton.textContent = $(this).text();
+            historyEl.appendChild(historicalButton);
 
             var weatherLocation = document.createElement("div");
             var weatherDetailsH3 = document.createElement("h3");
