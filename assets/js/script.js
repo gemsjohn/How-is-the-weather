@@ -3,6 +3,7 @@ var citySearchEl = document.querySelector("#button-addon2");
 var inputValueEl = document.querySelector("#search-location");
 var displayResultsEl = document.querySelector("#results");
 var weatherDetails = document.querySelector("#weather-details");
+var forecastDetails = document.querySelector("#fiveDayForecast");
 
 // Establish the current date and time
 var day = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -24,7 +25,6 @@ var getWeatherData = function(input) {
     fetch(apiUrl)
         .then(function(response) {
             if (response.ok) {
-                console.log(response);
                 response.json().then(function(data) {
                     displaySearchResult(data);
                 });
@@ -64,7 +64,7 @@ var displaySearchResult = function (city) {
         resultButtons[i].setAttribute("data-select", i);
 
         var cityListGroupUl = document.createElement("ul");
-        cityListGroupUl.classList = "list-group col-3";
+        cityListGroupUl.classList = "list-group col-lg-3";
         cityListGroupUl.appendChild(resultButtons[i]);
         displayResultsEl.appendChild(cityListGroupUl);
 
@@ -140,7 +140,100 @@ var displayWeatherDetails = function(cityData) {
     weatherCurrent.appendChild(weatherHumidity);
     weatherCurrent.appendChild(weatherUV);
     weatherDetails.appendChild(weatherCurrent);
+
+    // console.log(cityData.daily);
+    fiveDayForecast(cityData.daily);
 };
+
+var fiveDayForecast = function(daily) {
+    var day_a = document.querySelector("#day_a");
+    var day_b = document.querySelector("#day_b");
+    var day_c = document.querySelector("#day_c");
+    var day_d = document.querySelector("#day_d");
+    var day_e = document.querySelector("#day_e");
+
+    var day = [];
+    var day_temp = [];
+    var day_wind = [];
+    var day_humidity = [];
+    var day_icon = [];
+
+    
+
+    console.log(daily);
+    
+    for (var i = 0; i < daily.length; i++) {
+        var unixUTC = daily[i].dt;
+        var temp = daily[i].temp.day;
+        var wind = daily[i].wind_speed;
+        var humidity = daily[i].humidity;
+        var icon = daily[i].weather[0].icon;
+
+        day[i] = moment.unix(unixUTC);
+        day_temp[i] = temp;
+        day_wind[i] = wind;
+        day_humidity[i] = humidity;
+        day_icon[i] = icon;
+
+        console.log(day[i]._d);
+        
+    }
+
+    var dayOne = document.createElement("h3");
+    var dayTwo = document.createElement("h3");
+    var dayThree = document.createElement("h3");
+    var dayFour = document.createElement("h3");
+    var dayFive = document.createElement("h3");
+
+    dayOne.classList = "text-light";
+    dayTwo.classList = "text-light";
+    dayThree.classList = "text-light";
+    dayFour.classList = "text-light";
+    dayFive.classList = "text-light";
+
+    var iconImgOne = "http://openweathermap.org/img/wn/" + day_icon[1] + "@2x.png"
+    var iconImgTwo = "http://openweathermap.org/img/wn/" + day_icon[2] + "@2x.png"
+    var iconImgThree = "http://openweathermap.org/img/wn/" + day_icon[3] + "@2x.png"
+    var iconImgFour = "http://openweathermap.org/img/wn/" + day_icon[4] + "@2x.png"
+    var iconImgFive = "http://openweathermap.org/img/wn/" + day_icon[5] + "@2x.png"
+
+    dayOne.innerHTML = "<h3>" + day[1]._d + "</h3>"
+        + "<img src=" + iconImgOne + ">" 
+        + "<li>" + "Temp: " + day_temp[1] + "</li>" 
+        + "<li>" + "Wind: " + day_wind[1] + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[1] + "</li>";
+    
+    dayTwo.innerHTML = "<h3>" + day[2]._d + "</h3>"
+        + "<img src=" + iconImgTwo + ">"
+        + "<li>" + "Temp: " + day_temp[2] + "</li>" 
+        + "<li>" + "Wind: " + day_wind[2] + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[2] + "</li>";
+
+    dayThree.innerHTML = "<h3>" + day[3]._d + "</h3>"
+        + "<img src=" + iconImgThree + ">"
+        + "<li>" + "Temp: " + day_temp[3] + "</li>" 
+        + "<li>" + "Wind: " + day_wind[3] + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[3] + "</li>";
+
+    dayFour.innerHTML = "<h3>" + day[4]._d + "</h3>"
+        + "<img src=" + iconImgFour + ">"
+        + "<li>" + "Temp: " + day_temp[4] + "</li>" 
+        + "<li>" + "Wind: " + day_wind[4] + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[4] + "</li>";
+
+    dayFive.innerHTML = "<h3>" + day[5]._d + "</h3>"
+        + "<img src=" + iconImgFive + ">" 
+        + "<li>" + "Temp: " + day_temp[5] + "</li>" 
+        + "<li>" + "Wind: " + day_wind[5] + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[5] + "</li>";
+
+    day_a.appendChild(dayOne);
+    day_b.appendChild(dayTwo);
+    day_c.appendChild(dayThree);
+    day_d.appendChild(dayFour);
+    day_e.appendChild(dayFive);
+};
+
 
 
 $(citySearchEl).on("click", function() {
