@@ -132,8 +132,17 @@ var displayWeatherDetails = function(cityData) {
     weatherHumidity.textContent = "Humidity: " + cityData.current.humidity + " %";
 
     var weatherUV = document.createElement("h3");
-    weatherUV.classList = "text-light";
-    weatherUV.textContent = "UV Index: " + cityData.current.uvi;
+
+    if (cityData.current.uvi >= 0 && cityData.current.uvi < 3) {
+        weatherUV.classList = "text-light badge bg-success";
+        weatherUV.textContent = "UV Index: " + cityData.current.uvi;
+    } else if (cityData.current.uvi >= 3 && cityData.current.uvi < 8) {
+        weatherUV.classList = "text-light badge bg-warning";
+        weatherUV.textContent = "UV Index: " + cityData.current.uvi;
+    } else if (cityData.current.uvi >= 8) {
+        weatherUV.classList = "text-light badge bg-danger";
+        weatherUV.textContent = "UV Index: " + cityData.current.uvi;
+    }
 
     weatherCurrent.appendChild(weatherTemp);
     weatherCurrent.appendChild(weatherWind);
@@ -158,9 +167,7 @@ var fiveDayForecast = function(daily) {
     var day_humidity = [];
     var day_icon = [];
 
-    
-
-    console.log(daily);
+    // console.log(daily);
     
     for (var i = 0; i < daily.length; i++) {
         var unixUTC = daily[i].dt;
@@ -175,7 +182,7 @@ var fiveDayForecast = function(daily) {
         day_humidity[i] = humidity;
         day_icon[i] = icon;
 
-        console.log(day[i]._d);
+        // console.log(day[i]._d);
         
     }
 
@@ -199,33 +206,33 @@ var fiveDayForecast = function(daily) {
 
     dayOne.innerHTML = "<h3>" + day[1]._d + "</h3>"
         + "<img src=" + iconImgOne + ">" 
-        + "<li>" + "Temp: " + day_temp[1] + "</li>" 
-        + "<li>" + "Wind: " + day_wind[1] + "</li>"
-        + "<li>" + "Humidity: " + day_humidity[1] + "</li>";
+        + "<li>" + "Temp: " + day_temp[1] + " °F" + "</li>" 
+        + "<li>" + "Wind: " + day_wind[1] + " MPH" + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[1] + " %" + "</li>";
     
     dayTwo.innerHTML = "<h3>" + day[2]._d + "</h3>"
         + "<img src=" + iconImgTwo + ">"
-        + "<li>" + "Temp: " + day_temp[2] + "</li>" 
-        + "<li>" + "Wind: " + day_wind[2] + "</li>"
-        + "<li>" + "Humidity: " + day_humidity[2] + "</li>";
+        + "<li>" + "Temp: " + day_temp[2] + " °F" + "</li>" 
+        + "<li>" + "Wind: " + day_wind[2] + " MPH" + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[2] + " %" + "</li>";
 
     dayThree.innerHTML = "<h3>" + day[3]._d + "</h3>"
         + "<img src=" + iconImgThree + ">"
-        + "<li>" + "Temp: " + day_temp[3] + "</li>" 
-        + "<li>" + "Wind: " + day_wind[3] + "</li>"
-        + "<li>" + "Humidity: " + day_humidity[3] + "</li>";
+        + "<li>" + "Temp: " + day_temp[3] + " °F" + "</li>" 
+        + "<li>" + "Wind: " + day_wind[3] + " MPH" + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[3] + " %" + "</li>";
 
     dayFour.innerHTML = "<h3>" + day[4]._d + "</h3>"
         + "<img src=" + iconImgFour + ">"
-        + "<li>" + "Temp: " + day_temp[4] + "</li>" 
-        + "<li>" + "Wind: " + day_wind[4] + "</li>"
-        + "<li>" + "Humidity: " + day_humidity[4] + "</li>";
+        + "<li>" + "Temp: " + day_temp[4] + " °F" + "</li>" 
+        + "<li>" + "Wind: " + day_wind[4] + " MPH" + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[4] + " %" + "</li>";
 
     dayFive.innerHTML = "<h3>" + day[5]._d + "</h3>"
         + "<img src=" + iconImgFive + ">" 
-        + "<li>" + "Temp: " + day_temp[5] + "</li>" 
-        + "<li>" + "Wind: " + day_wind[5] + "</li>"
-        + "<li>" + "Humidity: " + day_humidity[5] + "</li>";
+        + "<li>" + "Temp: " + day_temp[5] + " °F" + "</li>" 
+        + "<li>" + "Wind: " + day_wind[5] + " MPH" + "</li>"
+        + "<li>" + "Humidity: " + day_humidity[5] + " %" + "</li>";
 
     day_a.appendChild(dayOne);
     day_b.appendChild(dayTwo);
