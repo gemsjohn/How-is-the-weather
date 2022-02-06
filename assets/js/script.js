@@ -3,8 +3,83 @@ var citySearchEl = document.querySelector("#button-addon2");
 var inputValueEl = document.querySelector("#search-location");
 var displayResultsEl = document.querySelector("#results");
 var weatherDetails = document.querySelector("#weather-details");
-var forecastDetails = document.querySelector("#fiveDayForecast");
+// var forecastDetails = document.querySelector("#fiveDayForecast");
 var historyEl = document.querySelector("#history");
+
+var day_a = document.querySelector("#day_a");
+var day_b = document.querySelector("#day_b");
+var day_c = document.querySelector("#day_c");
+var day_d = document.querySelector("#day_d");
+var day_e = document.querySelector("#day_e");
+
+var dayOne = document.createElement("h3");
+var dayTwo = document.createElement("h3");
+var dayThree = document.createElement("h3");
+var dayFour = document.createElement("h3");
+var dayFive = document.createElement("h3");
+
+var weatherLocation = document.createElement("div");
+var weatherDetailsH3 = document.createElement("h3");
+
+var recentSearch = [];
+var recentSearchLat = [];
+var recentSearchLon = [];
+
+var recentSearchData = localStorage.getItem("recentSearch");
+var recentSearchLatData = localStorage.getItem("recentSearchLat");
+var recentSearchLonData = localStorage.getItem("recentSearchLon");
+
+if (recentSearchData === null) {
+    recentSearch = [];
+    recentSearchLatData = [];
+    recentSearchLonData = [];
+    console.log("nada");
+} else {
+    var recentSearchStorage = JSON.parse(recentSearchData);
+    var recentSearchLatStorage = JSON.parse(recentSearchLatData);
+    var recentSearchLonStorage = JSON.parse(recentSearchLonData);
+
+    console.log(recentSearchStorage);
+    
+    for (var i = 0; i < recentSearchStorage.length; i++) {
+        if (recentSearchStorage.length > 3) {
+            recentSearchStorage.shift();
+            recentSearchLatStorage.shift();
+            recentSearchLonStorage.shift();
+        }
+        recentSearch.push('' + recentSearchStorage[i] + '');
+        recentSearchLat.push('' + recentSearchLatStorage[i] + '');
+        recentSearchLon.push('' + recentSearchLonStorage[i] + '');
+        
+        var historicalButtonRefresh = document.createElement("button");
+        historicalButtonRefresh.classList = "btn btn-info btn-lg text-light m-3 btn-hover";
+        historicalButtonRefresh.textContent = recentSearch[i];
+        historicalButtonRefresh.setAttribute("data-refresh", i);
+        historyEl.appendChild(historicalButtonRefresh);
+
+        $('button[data-refresh="' + i + '"]').on("click", function(event) {
+            var element = event.target;
+            var i = element.getAttribute('data-refresh');
+
+            var latitude = recentSearchLat[i];
+            var longitude = recentSearchLon[i];
+
+            weatherLocation.remove();
+            dayOne.innerHTML = "";
+            dayTwo.innerHTML = "";
+            dayThree.innerHTML = "";
+            dayFour.innerHTML = "";
+            dayFive.innerHTML = "";
+
+            weatherDetailsH3.classList = "text-light";
+            weatherDetails.textContent = $(this).text();
+            weatherLocation.appendChild(weatherDetailsH3);
+            
+            convertGeoToData(latitude, longitude);
+        });
+    }
+}
+
 
 // Establish the current date and time
 var day = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -80,14 +155,23 @@ var displaySearchResult = function (city) {
             historicalButton.textContent = $(this).text();
             historyEl.appendChild(historicalButton);
 
-            var weatherLocation = document.createElement("div");
-            var weatherDetailsH3 = document.createElement("h3");
+            recentSearch.push(city[i].name + ", " + city[i].state + ", " + city[i].country);
+            localStorage.setItem("recentSearch", JSON.stringify(recentSearch));
+
+            // var weatherLocation = document.createElement("div");
+            // var weatherDetailsH3 = document.createElement("h3");
             weatherDetailsH3.classList = "text-light";
             weatherDetails.textContent = $(this).text();
             weatherLocation.appendChild(weatherDetailsH3);
 
             var latitude = city[i].lat;
             var longitude = city[i].lon;
+
+            recentSearchLat.push(latitude);
+            recentSearchLon.push(longitude);
+
+            localStorage.setItem("recentSearchLat", JSON.stringify(recentSearchLat));
+            localStorage.setItem("recentSearchLon", JSON.stringify(recentSearchLon));
 
             convertGeoToData(latitude, longitude);
         });
@@ -161,11 +245,7 @@ var displayWeatherDetails = function(cityData) {
 };
 
 var fiveDayForecast = function(daily) {
-    var day_a = document.querySelector("#day_a");
-    var day_b = document.querySelector("#day_b");
-    var day_c = document.querySelector("#day_c");
-    var day_d = document.querySelector("#day_d");
-    var day_e = document.querySelector("#day_e");
+    
 
     var day = [];
     var day_temp = [];
@@ -192,11 +272,7 @@ var fiveDayForecast = function(daily) {
         
     }
 
-    var dayOne = document.createElement("h3");
-    var dayTwo = document.createElement("h3");
-    var dayThree = document.createElement("h3");
-    var dayFour = document.createElement("h3");
-    var dayFive = document.createElement("h3");
+    
 
     dayOne.classList = "text-light";
     dayTwo.classList = "text-light";
@@ -252,3 +328,7 @@ var fiveDayForecast = function(daily) {
 $(citySearchEl).on("click", function() {
     buttonClickHandler();
 })
+
+// setInterval(function() {
+
+// }, (1000))
