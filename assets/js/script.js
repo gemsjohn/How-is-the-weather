@@ -17,6 +17,7 @@ var weatherTemp = document.createElement("h3");
 var weatherWind = document.createElement("h3");
 var weatherHumidity = document.createElement("h3");
 var weatherUV = document.createElement("h3");
+var icon = document.createElement("h3");
 var dayOne = document.createElement("h3");
 var dayTwo = document.createElement("h3");
 var dayThree = document.createElement("h3");
@@ -244,7 +245,11 @@ var convertGeoToData = function(lat, lon) {
 // displayWeatherDetails takes the One Call API data and pulls 
 // the  current temperature, wind, humidity, and UV index data.
 // Then appends that data to the CITY card below the City, State, and Sate details.
-var displayWeatherDetails = function(cityData) {  
+var displayWeatherDetails = function(cityData) { 
+    var imgAPISource = cityData.current.weather[0].icon;
+    var iconImg = "http://openweathermap.org/img/wn/" + imgAPISource + "@2x.png"
+    icon.innerHTML = "<img src=" + iconImg + ">"; 
+
     weatherTemp.classList = "text-light";
     weatherTemp.textContent = "Temp: " + cityData.current.temp + " °F";
 
@@ -265,6 +270,7 @@ var displayWeatherDetails = function(cityData) {
         weatherUV.textContent = "UV Index: " + cityData.current.uvi;
     }
 
+    weatherCurrent.appendChild(icon);
     weatherCurrent.appendChild(weatherTemp);
     weatherCurrent.appendChild(weatherWind);
     weatherCurrent.appendChild(weatherHumidity);
@@ -344,6 +350,7 @@ var fiveDayForecast = function(daily) {
     day_e.appendChild(dayFive);
     
 };
+
 
 citySearchEl.addEventListener("submit", buttonClickHandler);
 
