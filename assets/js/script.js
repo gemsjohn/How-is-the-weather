@@ -1,26 +1,30 @@
-// Variables that query the index.html file
-var citySearchEl = document.querySelector("#button-addon2"); 
+var citySearchEl = document.querySelector("#user-form"); 
 var inputValueEl = document.querySelector("#search-location");
 var displayResultsEl = document.querySelector("#results");
 var weatherDetails = document.querySelector("#weather-details");
-// var forecastDetails = document.querySelector("#fiveDayForecast");
 var historyEl = document.querySelector("#history");
-
 var day_a = document.querySelector("#day_a");
 var day_b = document.querySelector("#day_b");
 var day_c = document.querySelector("#day_c");
 var day_d = document.querySelector("#day_d");
 var day_e = document.querySelector("#day_e");
 
+var weatherCurrent = document.createElement("div");
+var weatherLocation = document.createElement("div");
+var weatherDetailsH3 = document.createElement("h3");
+var cityListGroupUl = document.createElement("ul");
+var weatherTemp = document.createElement("h3");
+var weatherWind = document.createElement("h3");
+var weatherHumidity = document.createElement("h3");
+var weatherUV = document.createElement("h3");
 var dayOne = document.createElement("h3");
 var dayTwo = document.createElement("h3");
 var dayThree = document.createElement("h3");
 var dayFour = document.createElement("h3");
 var dayFive = document.createElement("h3");
 
-var weatherLocation = document.createElement("div");
-var weatherDetailsH3 = document.createElement("h3");
-
+var historicalButtonRefresh = [];
+var resultButtons = [];
 var recentSearch = [];
 var recentSearchLat = [];
 var recentSearchLon = [];
@@ -29,19 +33,13 @@ var recentSearchData = localStorage.getItem("recentSearch");
 var recentSearchLatData = localStorage.getItem("recentSearchLat");
 var recentSearchLonData = localStorage.getItem("recentSearchLon");
 
-if (recentSearchData === null) {
-    recentSearch = [];
-    recentSearchLatData = [];
-    recentSearchLonData = [];
-    console.log("nada");
-} else {
-    var recentSearchStorage = JSON.parse(recentSearchData);
-    var recentSearchLatStorage = JSON.parse(recentSearchLatData);
-    var recentSearchLonStorage = JSON.parse(recentSearchLonData);
+var recentSearchStorage = JSON.parse(recentSearchData);
+var recentSearchLatStorage = JSON.parse(recentSearchLatData);
+var recentSearchLonStorage = JSON.parse(recentSearchLonData);
 
-    console.log(recentSearchStorage);
-    
-    for (var i = 0; i < recentSearchStorage.length; i++) {
+var checkHistory = function() {
+    removeHistoricalButtons();
+    for (var i = 0; i < recentSearchStorage.length; i++) {  
         if (recentSearchStorage.length > 3) {
             recentSearchStorage.shift();
             recentSearchLatStorage.shift();
@@ -50,46 +48,78 @@ if (recentSearchData === null) {
         recentSearch.push('' + recentSearchStorage[i] + '');
         recentSearchLat.push('' + recentSearchLatStorage[i] + '');
         recentSearchLon.push('' + recentSearchLonStorage[i] + '');
+        updateButtons(i);
         
-        var historicalButtonRefresh = document.createElement("button");
-        historicalButtonRefresh.classList = "btn btn-info btn-lg text-light m-3 btn-hover";
-        historicalButtonRefresh.textContent = recentSearch[i];
-        historicalButtonRefresh.setAttribute("data-refresh", i);
-        historyEl.appendChild(historicalButtonRefresh);
+    }   
+        
+    
+};
 
-        $('button[data-refresh="' + i + '"]').on("click", function(event) {
-            var element = event.target;
-            var i = element.getAttribute('data-refresh');
-
-            var latitude = recentSearchLat[i];
-            var longitude = recentSearchLon[i];
-
-            weatherLocation.remove();
-            dayOne.innerHTML = "";
-            dayTwo.innerHTML = "";
-            dayThree.innerHTML = "";
-            dayFour.innerHTML = "";
-            dayFive.innerHTML = "";
-
-            weatherDetailsH3.classList = "text-light";
-            weatherDetails.textContent = $(this).text();
-            weatherLocation.appendChild(weatherDetailsH3);
-            
-            convertGeoToData(latitude, longitude);
-        });
+var removeHistoricalButtons = function() {
+    if (historicalButtonRefresh) {
+        for (var x = 0; x < historicalButtonRefresh.length; x++) {
+            var buttonPrevious = document.querySelector(
+                "button[data-refresh='" + x + "']"
+            );
+            buttonPrevious.remove();
+        };
     }
 }
 
+var updateButtons = function (i) {
+    historicalButtonRefresh[i] = document.createElement("button");
+    historicalButtonRefresh[i].classList = "btn btn-info btn-lg text-light m-3 btn-hover";
+    historicalButtonRefresh[i].textContent = recentSearchStorage[i];
+    historicalButtonRefresh[i].setAttribute("data-refresh", i);
+    historyEl.appendChild(historicalButtonRefresh[i]);
+
+    $('button[data-refresh="' + i + '"]').on("click", function(event) {
+        var element = event.target;
+        var i = element.getAttribute('data-refresh');
+
+        var latitude = recentSearchLat[i];
+        var longitude = recentSearchLon[i];
+
+        weatherLocation.remove();
+        dayOne.innerHTML = "";
+        dayTwo.innerHTML = "";
+        dayThree.innerHTML = "";
+        dayFour.innerHTML = "";
+        dayFive.innerHTML = "";
+
+        weatherDetailsH3.classList = "text-light";
+        weatherDetails.textContent = $(this).text();
+        weatherLocation.appendChild(weatherDetailsH3);
+        
+        convertGeoToData(latitude, longitude);
+    });
+};
 
 // Establish the current date and time
 var day = moment().format('MMMM Do YYYY, h:mm:ss a');
 $("#currentDay").append(document.createTextNode(day));
 
+if (recentSearchData === null) {
+    recentSearch = [];
+    recentSearchLatData = [];
+    recentSearchLonData = [];
+} else if (recentSearchData) {
+    checkHistory();
+}
+
 // User selects Search Button and passes input value as a 
 // parameter through getWeatherData()
-var buttonClickHandler = function() {
+var buttonClickHandler = function(event) {
+    // updated = 1;
+    event.preventDefault();
     var input = inputValueEl.value.trim();
-    getWeatherData(input);
+    if (input) {
+        inputValueEl.value = "";
+        getWeatherData(input);
+    } else {
+        alert("Please ender a city name.");
+    }
+    
 };
 
 // getWeatherData takes the 'input' and adds it to the apiUrl query
@@ -125,44 +155,37 @@ var displaySearchResult = function (city) {
     }
 
     for (var i = 0; i < city.length; i++) {
-
         var cityName = city[i].name;
         var cityState = city[i].state;
         var cityCountry = city[i].country;
         var locationDetails = [];
-        var resultButtons = [];
-
+        
         locationDetails[i] = cityName + ", " + cityState + ", " + cityCountry;
-
         resultButtons[i] = document.createElement("button");
         resultButtons[i].textContent = locationDetails[i];
         resultButtons[i].classList = "list-group-item list-group-item-primary";
         resultButtons[i].setAttribute("data-select", i);
 
-        var cityListGroupUl = document.createElement("ul");
         cityListGroupUl.classList = "list-group col-lg-3";
         cityListGroupUl.appendChild(resultButtons[i]);
         displayResultsEl.appendChild(cityListGroupUl);
-
+ 
         $(resultButtons[i]).on("click", function(event) {
+            for (var x = 0; x < resultButtons.length; x++) {
+                var buttonPrevious = document.querySelector(
+                    "button[data-select='" + x + "']"
+                );
+                buttonPrevious.remove();
+            };
+            
             var element = event.target;
             var i = element.getAttribute('data-select');
 
-            displayResultsEl.remove();
-
-            var historicalButton = document.createElement("button");
-            historicalButton.classList = "btn btn-info btn-lg text-light m-3 btn-hover";
-            historicalButton.textContent = $(this).text();
-            historyEl.appendChild(historicalButton);
-
-            recentSearch.push(city[i].name + ", " + city[i].state + ", " + city[i].country);
-            localStorage.setItem("recentSearch", JSON.stringify(recentSearch));
-
-            // var weatherLocation = document.createElement("div");
-            // var weatherDetailsH3 = document.createElement("h3");
             weatherDetailsH3.classList = "text-light";
             weatherDetails.textContent = $(this).text();
             weatherLocation.appendChild(weatherDetailsH3);
+
+            recentSearch.push(city[i].name + ", " + city[i].state + ", " + city[i].country);
 
             var latitude = city[i].lat;
             var longitude = city[i].lon;
@@ -170,9 +193,28 @@ var displaySearchResult = function (city) {
             recentSearchLat.push(latitude);
             recentSearchLon.push(longitude);
 
+            if (recentSearch.length > 3) {
+                recentSearch.shift();
+                recentSearchLat.shift();
+                recentSearchLon.shift();
+            }
+
+            localStorage.setItem("recentSearch", JSON.stringify(recentSearch));
             localStorage.setItem("recentSearchLat", JSON.stringify(recentSearchLat));
             localStorage.setItem("recentSearchLon", JSON.stringify(recentSearchLon));
 
+            recentSearchData = localStorage.getItem("recentSearch");
+            recentSearchLatData = localStorage.getItem("recentSearchLat");
+            recentSearchLonData = localStorage.getItem("recentSearchLon");
+
+            recentSearchStorage = JSON.parse(recentSearchData);
+            recentSearchLatStorage = JSON.parse(recentSearchLatData);
+            recentSearchLonStorage = JSON.parse(recentSearchLonData);
+
+            removeHistoricalButtons();
+            for (var i = 0; i < recentSearchStorage.length; i++) {
+                updateButtons(i);
+            }
             convertGeoToData(latitude, longitude);
         });
         
@@ -184,13 +226,10 @@ var displaySearchResult = function (city) {
 // the displayWeatherDetails function.
 var convertGeoToData = function(lat, lon) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat + "&lon=" + lon + "&units=imperial&exclude=hourly,dailer&appid=24787d0fd9b0c4521d7a7b1d914ee0c3";
-    console.log(apiUrl);
     fetch(apiUrl)
         .then(function(response) {
             if (response.ok) {
-                console.log(response);
                 response.json().then(function(data) {
-                    console.log(data);
                     displayWeatherDetails(data);
                 });
             } else {
@@ -205,23 +244,15 @@ var convertGeoToData = function(lat, lon) {
 // displayWeatherDetails takes the One Call API data and pulls 
 // the  current temperature, wind, humidity, and UV index data.
 // Then appends that data to the CITY card below the City, State, and Sate details.
-var displayWeatherDetails = function(cityData) {
-    console.log(cityData.current);
-    var weatherCurrent = document.createElement("div");
-
-    var weatherTemp = document.createElement("h3");
+var displayWeatherDetails = function(cityData) {  
     weatherTemp.classList = "text-light";
     weatherTemp.textContent = "Temp: " + cityData.current.temp + " °F";
 
-    var weatherWind = document.createElement("h3");
     weatherWind.classList = "text-light";
     weatherWind.textContent = "Wind: " + cityData.current.wind_speed + " MPH";
 
-    var weatherHumidity = document.createElement("h3");
     weatherHumidity.classList = "text-light";
     weatherHumidity.textContent = "Humidity: " + cityData.current.humidity + " %";
-
-    var weatherUV = document.createElement("h3");
 
     if (cityData.current.uvi >= 0 && cityData.current.uvi < 3) {
         weatherUV.classList = "text-light badge bg-success";
@@ -240,20 +271,15 @@ var displayWeatherDetails = function(cityData) {
     weatherCurrent.appendChild(weatherUV);
     weatherDetails.appendChild(weatherCurrent);
 
-    // console.log(cityData.daily);
     fiveDayForecast(cityData.daily);
 };
 
 var fiveDayForecast = function(daily) {
-    
-
     var day = [];
     var day_temp = [];
     var day_wind = [];
     var day_humidity = [];
     var day_icon = [];
-
-    // console.log(daily);
     
     for (var i = 0; i < daily.length; i++) {
         var unixUTC = daily[i].dt;
@@ -266,13 +292,8 @@ var fiveDayForecast = function(daily) {
         day_temp[i] = temp;
         day_wind[i] = wind;
         day_humidity[i] = humidity;
-        day_icon[i] = icon;
-
-        // console.log(day[i]._d);
-        
+        day_icon[i] = icon; 
     }
-
-    
 
     dayOne.classList = "text-light";
     dayTwo.classList = "text-light";
@@ -321,14 +342,8 @@ var fiveDayForecast = function(daily) {
     day_c.appendChild(dayThree);
     day_d.appendChild(dayFour);
     day_e.appendChild(dayFive);
+    
 };
 
+citySearchEl.addEventListener("submit", buttonClickHandler);
 
-
-$(citySearchEl).on("click", function() {
-    buttonClickHandler();
-})
-
-// setInterval(function() {
-
-// }, (1000))

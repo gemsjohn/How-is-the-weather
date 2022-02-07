@@ -37,11 +37,10 @@
                     <div class="card-header bg-primary text-center">
                         Search for a City
                     </div>
-                    <div class="card-body">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="City Name" id="search-location">
-                            <button class="btn bg-primary" type="button" id="button-addon2">Search</button>
-                        </div>
+                    <form id="user-form" class="card-body">
+                        <input name="search-location" id="search-location" type="text" autofocus="true" class="form-input" />
+                        <button type="submit" class="btn bg-primary">Search</button>
+                      </form>
                     </div>
                 </div> 
             </div>
@@ -49,7 +48,7 @@
         
     </header>
     <main class="container-xxl p-3 mb-2">
-        <div id="history" style="color:white" class="flex-row"></div>
+        <div id="history" class="flex-row"></div>
         <div id="results" style="color:white" class="col-12"></div>
         <div class="card-group">
             <div class="col">
@@ -58,13 +57,7 @@
                         <div class="card-header bg-primary border-primary text-center w-100" id="searched-city">
                             CITY
                         </div>
-                        <div class="card-body" id="weather-details">
-                            <!-- <h5 class="card-title">Details</h5>
-                            <p class="card-text" id="temp">Temperature</p>
-                            <p class="card-text" id="wind">Temperature</p>
-                            <p class="card-text" id="humidity">Temperature</p>
-                            <p class="card-text" id="uv">Temperature</p> -->
-                        </div>
+                        <div class="card-body" id="weather-details"></div>
                         <div class="card-header bg-primary border-primary text-center">
                             5 - Day Forecast
                         </div>
