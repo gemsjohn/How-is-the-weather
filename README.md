@@ -25,13 +25,13 @@
 - Variables
 
 ## Mockup Images
-[John Martin - Weather Dashboard Website]()
+[John Martin - Weather Dashboard Website](https://gemsjohn.github.io/How-is-the-weather/)
 
 ### Header & Search Bard
-![Weather Dashboard Header]()
+![Weather Dashboard Header](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wb_header.png)
 
 ### Current Weather Data & Historical Searches
-![Weather Dashboard Current Data & Historical Searches]()
+![Weather Dashboard Current Data & Historical Searches](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wb_current_recentsearch.png)
 
 ### 5 Day Forecast
-![Weather Dashboard 5 Day Forecast]()
+![Weather Dashboard 5 Day Forecast](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wb_forecast.png)
