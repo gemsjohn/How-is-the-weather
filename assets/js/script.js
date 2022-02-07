@@ -38,6 +38,7 @@ var recentSearchStorage = JSON.parse(recentSearchData);
 var recentSearchLatStorage = JSON.parse(recentSearchLatData);
 var recentSearchLonStorage = JSON.parse(recentSearchLonData);
 
+// On page refresh check local storage and update the recent search history.
 var checkHistory = function() {
     removeHistoricalButtons();
     for (var i = 0; i < recentSearchStorage.length; i++) {  
@@ -50,12 +51,10 @@ var checkHistory = function() {
         recentSearchLat.push('' + recentSearchLatStorage[i] + '');
         recentSearchLon.push('' + recentSearchLonStorage[i] + '');
         updateButtons(i);
-        
     }   
-        
-    
 };
 
+// Prevent recent search history buttons from duplicating.
 var removeHistoricalButtons = function() {
     if (historicalButtonRefresh) {
         for (var x = 0; x < historicalButtonRefresh.length; x++) {
@@ -67,6 +66,7 @@ var removeHistoricalButtons = function() {
     }
 }
 
+// Update recent serach history buttons and handle on click events.
 var updateButtons = function (i) {
     historicalButtonRefresh[i] = document.createElement("button");
     historicalButtonRefresh[i].classList = "btn btn-info btn-lg text-light m-3 btn-hover";
@@ -96,10 +96,11 @@ var updateButtons = function (i) {
     });
 };
 
-// Establish the current date and time
+// Establish the current date and time.
 var day = moment().format('MMMM Do YYYY, h:mm:ss a');
 $("#currentDay").append(document.createTextNode(day));
 
+// On page refresh determine if there is anything stored in local storage 
 if (recentSearchData === null) {
     recentSearch = [];
     recentSearchLatData = [];
@@ -109,7 +110,7 @@ if (recentSearchData === null) {
 }
 
 // User selects Search Button and passes input value as a 
-// parameter through getWeatherData()
+// parameter through getWeatherData().
 var buttonClickHandler = function(event) {
     // updated = 1;
     event.preventDefault();
@@ -120,13 +121,10 @@ var buttonClickHandler = function(event) {
     } else {
         alert("Please ender a city name.");
     }
-    
 };
 
-// getWeatherData takes the 'input' and adds it to the apiUrl query
-// If the user gets a response then use the data
-// as the parameter for displaySearchResults function
-// else display an alert
+// Add input parameter to Geocoding apiURL and look for a response.
+// Take response data and pass it through displaySearchResult() as a parameter.
 var getWeatherData = function(input) {
     var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=5&appid=24787d0fd9b0c4521d7a7b1d914ee0c3";
     fetch(apiUrl)
@@ -144,17 +142,12 @@ var getWeatherData = function(input) {
         });
 };
 
-// displaySearchReach takes the 'city' geocoding api data, identifies the length of the array,
-// appends part of the data to a list of buttons.
-// If the user selects one of those buttons, then the City, State, and Country details
-// are appended to the CITY card. The longitude and latitude are passed as parameters
-// through convertGeoToData function
+// Based on the city data produce search results so the user can select the correct city.
 var displaySearchResult = function (city) {
     if (city.length === 0) {
         displayResultsEl.textContent = "City not found.";
         return;
     }
-
     for (var i = 0; i < city.length; i++) {
         var cityName = city[i].name;
         var cityState = city[i].state;
@@ -218,13 +211,11 @@ var displaySearchResult = function (city) {
             }
             convertGeoToData(latitude, longitude);
         });
-        
     }
 };
 
-// convertGeoToData takes the latitude and longitude from the city data and adds
-// them to the apiUrl query. The result of that data is passed as a parameter through
-// the displayWeatherDetails function.
+// Add latitude and longitude parameters to the OpenWeather apiURL and look for a response.
+// Take response data and pass it through displayWeatherDetails() as a parameter.
 var convertGeoToData = function(lat, lon) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat + "&lon=" + lon + "&units=imperial&exclude=hourly,dailer&appid=24787d0fd9b0c4521d7a7b1d914ee0c3";
     fetch(apiUrl)
@@ -242,9 +233,7 @@ var convertGeoToData = function(lat, lon) {
         });
 };
 
-// displayWeatherDetails takes the One Call API data and pulls 
-// the  current temperature, wind, humidity, and UV index data.
-// Then appends that data to the CITY card below the City, State, and Sate details.
+// Display weather details for the given city; current and five day forecast.
 var displayWeatherDetails = function(cityData) { 
     var imgAPISource = cityData.current.weather[0].icon;
     var iconImg = "http://openweathermap.org/img/wn/" + imgAPISource + "@2x.png"
@@ -351,6 +340,4 @@ var fiveDayForecast = function(daily) {
     
 };
 
-
 citySearchEl.addEventListener("submit", buttonClickHandler);
-
