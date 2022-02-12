@@ -248,13 +248,13 @@ var displayWeatherDetails = function(cityData) {
     weatherHumidity.classList = "text-light";
     weatherHumidity.textContent = "Humidity: " + cityData.current.humidity + " %";
 
-    if (cityData.current.uvi >= 0 && cityData.current.uvi < 3) {
+    if (cityData.current.uvi >= 0 && cityData.current.uvi < 2) {
         weatherUV.classList = "text-light badge bg-success";
         weatherUV.textContent = "UV Index: " + cityData.current.uvi;
-    } else if (cityData.current.uvi >= 3 && cityData.current.uvi < 8) {
+    } else if (cityData.current.uvi >= 2 && cityData.current.uvi < 5) {
         weatherUV.classList = "text-light badge bg-warning";
         weatherUV.textContent = "UV Index: " + cityData.current.uvi;
-    } else if (cityData.current.uvi >= 8) {
+    } else if (cityData.current.uvi >= 5) {
         weatherUV.classList = "text-light badge bg-danger";
         weatherUV.textContent = "UV Index: " + cityData.current.uvi;
     }
