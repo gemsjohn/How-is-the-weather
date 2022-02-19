@@ -1,3 +1,12 @@
+* {
+    font-size: x-small;
+}
 body {
     background-color: #313233;
+}
+.weather-current h3 {
+    font-size: 1.2rem;
+}
+#fiveDayForecast h3 {
+    font-size: 1.2rem;
 }

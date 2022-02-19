@@ -259,6 +259,8 @@ var displayWeatherDetails = function(cityData) {
         weatherUV.textContent = "UV Index: " + cityData.current.uvi;
     }
 
+    weatherCurrent.classList = "weather-current";
+
     weatherCurrent.appendChild(icon);
     weatherCurrent.appendChild(weatherTemp);
     weatherCurrent.appendChild(weatherWind);
@@ -290,43 +292,37 @@ var fiveDayForecast = function(daily) {
         day_icon[i] = icon; 
     }
 
-    dayOne.classList = "text-light";
-    dayTwo.classList = "text-light";
-    dayThree.classList = "text-light";
-    dayFour.classList = "text-light";
-    dayFive.classList = "text-light";
-
     var iconImgOne = "http://openweathermap.org/img/wn/" + day_icon[1] + "@2x.png"
     var iconImgTwo = "http://openweathermap.org/img/wn/" + day_icon[2] + "@2x.png"
     var iconImgThree = "http://openweathermap.org/img/wn/" + day_icon[3] + "@2x.png"
     var iconImgFour = "http://openweathermap.org/img/wn/" + day_icon[4] + "@2x.png"
     var iconImgFive = "http://openweathermap.org/img/wn/" + day_icon[5] + "@2x.png"
 
-    dayOne.innerHTML = "<h3>" + day[1]._d + "</h3>"
+    dayOne.innerHTML = "<h3>" + moment(day[1]._d).format('LL') + "</h3>"
         + "<img src=" + iconImgOne + ">" 
         + "<li>" + "Temp: " + day_temp[1] + " °F" + "</li>" 
         + "<li>" + "Wind: " + day_wind[1] + " MPH" + "</li>"
         + "<li>" + "Humidity: " + day_humidity[1] + " %" + "</li>";
     
-    dayTwo.innerHTML = "<h3>" + day[2]._d + "</h3>"
+    dayTwo.innerHTML = "<h3>" + moment(day[2]._d).format('LL') + "</h3>"
         + "<img src=" + iconImgTwo + ">"
         + "<li>" + "Temp: " + day_temp[2] + " °F" + "</li>" 
         + "<li>" + "Wind: " + day_wind[2] + " MPH" + "</li>"
         + "<li>" + "Humidity: " + day_humidity[2] + " %" + "</li>";
 
-    dayThree.innerHTML = "<h3>" + day[3]._d + "</h3>"
+    dayThree.innerHTML = "<h3>" + moment(day[3]._d).format('LL') + "</h3>"
         + "<img src=" + iconImgThree + ">"
         + "<li>" + "Temp: " + day_temp[3] + " °F" + "</li>" 
         + "<li>" + "Wind: " + day_wind[3] + " MPH" + "</li>"
         + "<li>" + "Humidity: " + day_humidity[3] + " %" + "</li>";
 
-    dayFour.innerHTML = "<h3>" + day[4]._d + "</h3>"
+    dayFour.innerHTML = "<h3>" + moment(day[4]._d).format('LL') + "</h3>"
         + "<img src=" + iconImgFour + ">"
         + "<li>" + "Temp: " + day_temp[4] + " °F" + "</li>" 
         + "<li>" + "Wind: " + day_wind[4] + " MPH" + "</li>"
         + "<li>" + "Humidity: " + day_humidity[4] + " %" + "</li>";
 
-    dayFive.innerHTML = "<h3>" + day[5]._d + "</h3>"
+    dayFive.innerHTML = "<h3>" + moment(day[5]._d).format('LL') + "</h3>"
         + "<img src=" + iconImgFive + ">" 
         + "<li>" + "Temp: " + day_temp[5] + " °F" + "</li>" 
         + "<li>" + "Wind: " + day_wind[5] + " MPH" + "</li>"
