@@ -1,4 +1,7 @@
 # How-is-the-weather
+## Application Description
+Find out what the current and 5 day weather forecast is for your city before you travel! Enter a city name, select from a list of cities, and determine if it is a good time to travel. 
+
 ## Features
 - The date and time are appended to the header of the website and updates upon page refresh.
 - When the user searches for a city they are presented with a list of city options to choose from.
@@ -28,10 +31,10 @@
 [John Martin - Weather Dashboard Website](https://gemsjohn.github.io/How-is-the-weather/)
 
 ### Header & Search Bard
-![Weather Dashboard Header](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wb_header.png)
+![Weather Dashboard Header](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wd_1.png)
 
 ### Current Weather Data & Historical Searches
-![Weather Dashboard Current Data & Historical Searches](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wb_current_recentsearch.png)
+![Weather Dashboard Current Data & Historical Searches](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wd_2.png)
 
 ### 5 Day Forecast
-![Weather Dashboard 5 Day Forecast](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wb_forecast.png)
+![Weather Dashboard 5 Day Forecast](https://github.com/gemsjohn/How-is-the-weather/blob/main/assets/img/wd_3.png)
